@@ -4,7 +4,7 @@ import esphome.config_validation as cv
 # from esphome.components import uart
 from esphome.const import CONF_ID
 
-# DEPENDENCIES = ["uart"]
+# DEPENDENCIES = ["i2s"]
 
 handvoice_ns = cg.esphome_ns.namespace("jpg_voice")
 voice_component = handvoice_ns.class_("Voice", cg.Component)  # , uart.UARTDevice)

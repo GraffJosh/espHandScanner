@@ -5,9 +5,8 @@
 
 #include "esphome/core/component.h"
 
-#include <I2S.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
+#include "I2S.h"
+#include "HTTPClient.h"
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
