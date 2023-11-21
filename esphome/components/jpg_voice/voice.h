@@ -6,10 +6,11 @@
 #include "esphome/core/component.h"
 
 #include "ESP_I2S.h"
+#include "WiFiClientSecure.h"
 #include "HTTPClient.h"
 #include "FS.h"
-#include "SD.h"
 #include "SPI.h"
+#include "SD.h"
 
 namespace esphome{
     namespace handScanner{
