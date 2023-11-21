@@ -6,7 +6,20 @@ namespace esphome {
 namespace thermalprinter {
 Voice::Voice()
 {
+  I2S.setAllPins(-1, 42, 41, -1, -1);
 
+  //The transmission mode is PDM_MONO_MODE, which means that PDM (pulse density modulation) mono mode is used for transmission
+  if (!I2S.begin(PDM_MONO_MODE, SAMPLE_RATE, SAMPLE_BITS)) {
+    Serial.println("Failed to initialize I2S!");
+    while (1)
+      ;
+  }
+
+  if (!SD.begin(21)) {
+    Serial.println("Failed to mount SD Card!");
+    while (1)
+      ;
+  }
 }
 
 
