@@ -5,7 +5,7 @@
 
 #include "esphome/core/component.h"
 
-#include "lib/I2S/src/I2S.h"
+#include "I2S.h"
 #include "lib/HTTPClient/src/HTTPClient.h"
 #include "lib/FS/src/FS.h"
 #include "lib/SD/src/SD.h"
