@@ -25,7 +25,7 @@ namespace esphome{
             private:
             
             File fileHandle;
-            const char defaultFilename[] = "/recording.wav";
+            const char defaultFilename[14] = "/recording.wav";
         };
     }
 }
