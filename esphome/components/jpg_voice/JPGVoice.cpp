@@ -1,6 +1,14 @@
-
 #include "Arduino.h"
 #include "JPGVoice.h"
+
+
+//Variables to be used in the recording program, do not change for best
+#define SAMPLE_RATE 16000U
+#define SAMPLE_BITS 16
+#define WAV_HEADER_SIZE 44
+#define VOLUME_GAIN 2
+#define RECORD_TIME 10      // seconds, The maximum value is 240
+
 
 namespace esphome {
 namespace handScanner {
