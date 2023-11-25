@@ -105,7 +105,7 @@ void JPGVoice::generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint3
   memcpy(wav_header, set_wav_header, sizeof(set_wav_header));
 }
 
-void JPGVoice::recordFile(void *arg) {
+void JPGVoice::recordFile() {
   uint32_t sample_size = 0;
 
   //This variable will be used to point to the actual recording buffer

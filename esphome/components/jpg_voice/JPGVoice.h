@@ -27,7 +27,7 @@ namespace esphome{
             void listDir(const char *dirname, uint8_t levels);
             void uploadFile(const char *filename);
             void generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t sample_rate);
-            void recordFile(void *arg);
+            void recordFile();
             // void startRecordAndUploadTask();
             private:
             bool isWIFIConnected = false;
