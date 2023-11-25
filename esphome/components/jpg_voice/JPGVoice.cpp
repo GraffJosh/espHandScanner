@@ -51,6 +51,10 @@ JPGVoice::JPGVoice()
 
 
 void JPGVoice::uploadFile(const char* filename) {
+  
+  while (!isWIFIConnected) {
+    delay(1000);
+  }
   fileHandle = SD.open(filename, FILE_READ);
   if (!fileHandle) {
     Serial.println("fileHandle IS NOT AVAILABLE!");
@@ -101,7 +105,7 @@ void JPGVoice::generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint3
   memcpy(wav_header, set_wav_header, sizeof(set_wav_header));
 }
 
-void JPGVoice::recordAndUpload(void *arg) {
+void JPGVoice::recordFile(void *arg) {
   uint32_t sample_size = 0;
 
   //This variable will be used to point to the actual recording buffer
@@ -156,15 +160,7 @@ void JPGVoice::recordAndUpload(void *arg) {
   fileHandle.close();
   Serial.printf("The recording is over.\n");
 
-  while (!isWIFIConnected) {
-    delay(1000);
-  }
-
-  if (isWIFIConnected) {
-    uploadFile(defaultFilename);
-  }
-
-  vTaskDelete(NULL);
+  // vTaskDelete(NULL);
 }
 
 // void JPGVoice::startRecordAndUploadTask(){
