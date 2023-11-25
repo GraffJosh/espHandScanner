@@ -30,6 +30,7 @@ namespace esphome{
             void recordFile();
             // void startRecordAndUploadTask();
             private:
+            HardwareSerial Serial;
             bool isWIFIConnected = false;
             File fileHandle;
             const char defaultFilename[15] = "/recording.wav";
