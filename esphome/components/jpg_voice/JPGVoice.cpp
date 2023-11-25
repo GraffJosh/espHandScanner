@@ -10,11 +10,11 @@ JPGVoice::JPGVoice()
 
   //The transmission mode is PDM_MONO_MODE, which means that PDM (pulse density modulation) mono mode is used for transmission
   if (!I2S.begin(PDM_MONO_MODE, SAMPLE_RATE, SAMPLE_BITS)) {
-    Serial.println("Failed to initialize I2S!");
+    ESP_LOGD("INFO:","Failed to initialize I2S!");
   }
 
   if (!SD.begin(21)) {
-    Serial.println("Failed to mount SD Card!");
+    ESP_LOGD("INFO:","Failed to mount SD Card!");
   }
 }
 
@@ -23,11 +23,11 @@ JPGVoice::JPGVoice()
 //   fs::FS* fs = SD;
 //   File root = fs.open(dirname);
 //   if (!root) {
-//     Serial.println("Failed to open directory");
+//     ESP_LOGD("INFO:","Failed to open directory");
 //     return;
 //   }
 //   if (!root.isDirectory()) {
-//     Serial.println("Not a directory");
+//     ESP_LOGD("INFO:","Not a directory");
 //     return;
 //   }
 
@@ -35,7 +35,7 @@ JPGVoice::JPGVoice()
 //   while (file) {
 //     if (file.isDirectory()) {
 //       Serial.print("  DIR : ");
-//       Serial.println(file.name());
+//       ESP_LOGD("INFO:",file.name());
 //       if (levels) {
 //         listDir(file.path(), levels - 1);
 //       }
@@ -43,7 +43,7 @@ JPGVoice::JPGVoice()
 //       Serial.print("  FILE: ");
 //       Serial.print(file.name());
 //       Serial.print("  SIZE: ");
-//       Serial.println(file.size());
+//       ESP_LOGD("INFO:",file.size());
 //     }
 //     file = root.openNextFile();
 //   }
@@ -139,26 +139,26 @@ void JPGVoice::uploadFile() {
   }
   fileHandle = SD.open(defaultFilename, FILE_READ);
   if (!fileHandle) {
-    Serial.println("fileHandle IS NOT AVAILABLE!");
+    ESP_LOGD("INFO:","fileHandle IS NOT AVAILABLE!");
     return;
   }
 
-  Serial.println("===> Upload file to Node.js Server");
+  ESP_LOGD("INFO:","===> Upload file to Node.js Server");
 
   HTTPClient client;
   client.begin("http://sliver.local:8888/uploadAudio");
   client.addHeader("Content-Type", "audio/wav");
   int httpResponseCode = client.sendRequest("POST", &fileHandle, fileHandle.size());
   Serial.print("httpResponseCode : ");
-  Serial.println(httpResponseCode);
+  ESP_LOGD("INFO:",httpResponseCode);
 
   if (httpResponseCode == 200) {
     String response = client.getString();
-    Serial.println("==================== Transcription ====================");
-    Serial.println(response);
-    Serial.println("====================      End      ====================");
+    ESP_LOGD("INFO:","==================== Transcription ====================");
+    ESP_LOGD("INFO:",response);
+    ESP_LOGD("INFO:","====================      End      ====================");
   } else {
-    Serial.println("Error");
+    ESP_LOGD("INFO:","Error");
   }
   fileHandle.close();
   client.end();
