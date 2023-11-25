@@ -12,12 +12,12 @@ JPGVoice::JPGVoice()
   //The transmission mode is PDM_MONO_MODE, which means that PDM (pulse density modulation) mono mode is used for transmission
   if (!I2S.begin(PDM_MONO_MODE, SAMPLE_RATE, SAMPLE_BITS)) {
     ESP_LOGD("INFO:","Failed to initialize I2S!");
-    Serial.println("INFO:","Failed to initialize I2S!");    
+    Serial.println("Failed to initialize I2S!");    
   }
 
   if (!SD.begin(21)) {
     ESP_LOGD("INFO:","Failed to mount SD Card!");
-    Serial.println("INFO:","Failed to mount SD Card!");    
+    Serial.println("Failed to mount SD Card!");    
   }
 }
 
@@ -81,7 +81,7 @@ void JPGVoice::recordFile() {
   //This variable will be used to point to the actual recording buffer
   uint8_t *rec_buffer = NULL;
   ESP_LOGD("INFO:","Ready to start recording ...\n");
-  Serial.println("INFO:","Ready to start recording ...\n");  
+  Serial.println("Ready to start recording ...\n");  
 
   fileHandle = SD.open(defaultFilename, FILE_WRITE);
 
@@ -98,12 +98,12 @@ void JPGVoice::recordFile() {
   rec_buffer = (uint8_t *)ps_malloc(size_of_recording);
   if (rec_buffer == NULL) {
     ESP_LOGD("INFO:","malloc failed!\n");
-    Serial.println("INFO:","malloc failed!\n");    
+    Serial.println("malloc failed!\n");    
     while (1)
       ;
   }
   ESP_LOGD("INFO:","Buffer: %d bytes\n", ESP.getPsramSize() - ESP.getFreePsram());
-  Serial.println("INFO:","Buffer: %d bytes\n", ESP.getPsramSize() - ESP.getFreePsram());  
+  Serial.println("Buffer: %d bytes\n", ESP.getPsramSize() - ESP.getFreePsram());  
 
   // Start recording
   // I2S port number (in this case I2S_NUM_0),
@@ -114,10 +114,10 @@ void JPGVoice::recordFile() {
   esp_i2s::i2s_read(esp_i2s::I2S_NUM_0, rec_buffer, size_of_recording, &sample_size, portMAX_DELAY);
   if (sample_size == 0) {
     ESP_LOGD("INFO:","Record Failed!\n");
-    Serial.println("INFO:","Record Failed!\n");    
+    Serial.println("Record Failed!\n");    
   } else {
     ESP_LOGD("INFO:","Record %d bytes\n", sample_size);
-    Serial.println("INFO:","Record %d bytes\n", sample_size);    
+    Serial.println("Record %d bytes\n", sample_size);    
   }
 
   // Increase volume
@@ -127,16 +127,16 @@ void JPGVoice::recordFile() {
 
   // Write data to the WAV file
   ESP_LOGD("INFO:","Writing to the file ...\n");
-  Serial.println("INFO:","Writing to the file ...\n");  
+  Serial.println("Writing to the file ...\n");  
   if (fileHandle.write(rec_buffer, size_of_recording) != size_of_recording)
     ESP_LOGD("INFO:","Write file Failed!\n");
-    Serial.println("INFO:","Write file Failed!\n");    
+    Serial.println("Write file Failed!\n");    
 
   free(rec_buffer);
   rec_buffer = NULL;
   fileHandle.close();
   ESP_LOGD("INFO:","The recording is over.\n");
-  Serial.println("INFO:","The recording is over.\n");  
+  Serial.println("The recording is over.\n");  
 
   // vTaskDelete(NULL);
 }
@@ -151,12 +151,12 @@ void JPGVoice::uploadFile() {
   fileHandle = SD.open(defaultFilename, FILE_READ);
   if (!fileHandle) {
     ESP_LOGD("INFO:","fileHandle IS NOT AVAILABLE!");
-    Serial.println("INFO:","fileHandle IS NOT AVAILABLE!");    
+    Serial.println("fileHandle IS NOT AVAILABLE!");    
     return;
   }
 
   ESP_LOGD("INFO:","===> Upload file to Node.js Server");
-  Serial.println("INFO:","===> Upload file to Node.js Server");  
+  Serial.println("===> Upload file to Node.js Server");  
 
   HTTPClient client;
   client.begin("http://sliver.local:8888/uploadAudio");
@@ -164,19 +164,19 @@ void JPGVoice::uploadFile() {
   int httpResponseCode = client.sendRequest("POST", &fileHandle, fileHandle.size());
   Serial.print("httpResponseCode : ");
   ESP_LOGD("INFO:",httpResponseCode);
-  Serial.println("INFO:",httpResponseCode);  
+  Serial.println(httpResponseCode);  
 
   if (httpResponseCode == 200) {
     String response = client.getString();
     ESP_LOGD("INFO:","==================== Transcription ====================");
-    Serial.println("INFO:","==================== Transcription ====================");    
+    Serial.println("==================== Transcription ====================");    
     ESP_LOGD("INFO:",response);
-    Serial.println("INFO:",response);    
+    Serial.println(response);    
     ESP_LOGD("INFO:","====================      End      ====================");
-    Serial.println("INFO:","====================      End      ====================");    
+    Serial.println("====================      End      ====================");    
   } else {
     ESP_LOGD("INFO:","Error");
-    Serial.println("INFO:","Error");    
+    Serial.println("Error");    
   }
   fileHandle.close();
   client.end();
