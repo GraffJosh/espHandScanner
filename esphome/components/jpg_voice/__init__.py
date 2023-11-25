@@ -6,7 +6,7 @@ from esphome.const import CONF_ID
 
 # DEPENDENCIES = ["i2s"]
 
-handvoice_ns = cg.esphome_ns.namespace("JPGVoice")
+handvoice_ns = cg.esphome_ns.namespace("jpg_voice")
 voice_component = handvoice_ns.class_("JPGVoice", cg.Component)  # , uart.UARTDevice)
 
 CONFIG_SCHEMA = (
