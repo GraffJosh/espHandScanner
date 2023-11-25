@@ -18,7 +18,6 @@ Voice::Voice()
   }
 }
 
-
 void Voice::listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
   Serial.printf("Listing directory: %s\n", dirname);
 
@@ -169,6 +168,9 @@ void Voice::recordAndUpload(void *arg) {
   vTaskDelete(NULL);
 }
 
+void Voice::startRecordAndUploadTask(){
+  xTaskCreate(recordAndUpload, "recordAndUpload", 1024 * 8, NULL, 1, NULL);
+}
 
 }
 }
