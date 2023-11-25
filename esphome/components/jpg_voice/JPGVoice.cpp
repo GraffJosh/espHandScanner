@@ -89,7 +89,7 @@ void JPGVoice::recordFile() {
   fileHandle.write(wav_header, WAV_HEADER_SIZE);
 
   // This code uses the ESP32's PSRAM (external cache memory) to dynamically allocate a section of memory to store the recording data.
-  rec_buffer = (uint8_t *)malloc(size_of_recording);
+  rec_buffer = (uint8_t *)ps_malloc(size_of_recording);
   if (rec_buffer == NULL) {
     ESP_LOGD("INFO:","malloc failed!\n");
   }
