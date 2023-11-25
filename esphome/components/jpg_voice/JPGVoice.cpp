@@ -9,7 +9,7 @@ JPGVoice::JPGVoice()
   ESP_LOGD("INFO:","Booting Up.");
   I2S.setAllPins(-1, 42, 41, -1, -1);
   //The transmission mode is PDM_MONO_MODE, which means that PDM (pulse density modulation) mono mode is used for transmission
-  if (!I2S.begin(PDM_MONO_MODE, SAMPLE_RATE, SAMPLE_BITS)) {
+  if (!I2S.begin(I2S_PHILIPS_MODE, SAMPLE_RATE, SAMPLE_BITS)) {
     ESP_LOGD("INFO:","Failed to initialize I2S!");
   }
 
