@@ -58,8 +58,8 @@ JPGVoice::JPGVoice()
 // }
 
 
-void JPGVoice::uploadFile() {
-  file = SD.open(filename, FILE_READ);
+void JPGVoice::uploadFile(const char* filename) {
+  fileHandle = SD.open(filename, FILE_READ);
   if (!file) {
     Serial.println("FILE IS NOT AVAILABLE!");
     return;
@@ -116,7 +116,7 @@ void JPGVoice::recordAndUpload(void *arg) {
   uint8_t *rec_buffer = NULL;
   Serial.printf("Ready to start recording ...\n");
 
-  File file = SD.open(filename, FILE_WRITE);
+  fileHandle = SD.open(defaultFilename, FILE_WRITE);
 
   // Write the header to the WAV file
   uint8_t wav_header[WAV_HEADER_SIZE];
@@ -125,7 +125,7 @@ void JPGVoice::recordAndUpload(void *arg) {
   generate_wav_header(wav_header, record_size, SAMPLE_RATE);
 
   //Call the file.write() function to write the data in the wav_header array to the newly created WAV file
-  file.write(wav_header, WAV_HEADER_SIZE);
+  fileHandle.write(wav_header, WAV_HEADER_SIZE);
 
   // This code uses the ESP32's PSRAM (external cache memory) to dynamically allocate a section of memory to store the recording data.
   rec_buffer = (uint8_t *)ps_malloc(record_size);
@@ -156,12 +156,12 @@ void JPGVoice::recordAndUpload(void *arg) {
 
   // Write data to the WAV file
   Serial.printf("Writing to the file ...\n");
-  if (file.write(rec_buffer, record_size) != record_size)
+  if (fileHandle.write(rec_buffer, record_size) != record_size)
     Serial.printf("Write file Failed!\n");
 
   free(rec_buffer);
   rec_buffer = NULL;
-  file.close();
+  fileHandle.close();
   Serial.printf("The recording is over.\n");
 
   while (!isWIFIConnected) {
@@ -169,7 +169,7 @@ void JPGVoice::recordAndUpload(void *arg) {
   }
 
   if (isWIFIConnected) {
-    uploadFile();
+    uploadFile(defaultFilename);
   }
 
   vTaskDelete(NULL);
