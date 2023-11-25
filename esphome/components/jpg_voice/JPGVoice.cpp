@@ -19,7 +19,7 @@ JPGVoice::JPGVoice()
 }
 
 // void JPGVoice::listDir(const char *dirname, uint8_t levels) {
-//   Serial.printf("Listing directory: %s\n", dirname);
+//   ESP_LOGD("INFO:","Listing directory: %s\n", dirname);
 //   fs::FS* fs = SD;
 //   File root = fs.open(dirname);
 //   if (!root) {
@@ -110,7 +110,7 @@ void JPGVoice::recordFile(void *arg) {
 
   //This variable will be used to point to the actual recording buffer
   uint8_t *rec_buffer = NULL;
-  Serial.printf("Ready to start recording ...\n");
+  ESP_LOGD("INFO:","Ready to start recording ...\n");
 
   fileHandle = SD.open(defaultFilename, FILE_WRITE);
 
@@ -126,11 +126,11 @@ void JPGVoice::recordFile(void *arg) {
   // This code uses the ESP32's PSRAM (external cache memory) to dynamically allocate a section of memory to store the recording data.
   rec_buffer = (uint8_t *)ps_malloc(size_of_recording);
   if (rec_buffer == NULL) {
-    Serial.printf("malloc failed!\n");
+    ESP_LOGD("INFO:","malloc failed!\n");
     while (1)
       ;
   }
-  Serial.printf("Buffer: %d bytes\n", ESP.getPsramSize() - ESP.getFreePsram());
+  ESP_LOGD("INFO:","Buffer: %d bytes\n", ESP.getPsramSize() - ESP.getFreePsram());
 
   // Start recording
   // I2S port number (in this case I2S_NUM_0),
@@ -140,9 +140,9 @@ void JPGVoice::recordFile(void *arg) {
   // and the maximum time to wait for the data to be read (in this case portMAX_DELAY, indicating an infinite wait time).
   esp_i2s::i2s_read(esp_i2s::I2S_NUM_0, rec_buffer, size_of_recording, &sample_size, portMAX_DELAY);
   if (sample_size == 0) {
-    Serial.printf("Record Failed!\n");
+    ESP_LOGD("INFO:","Record Failed!\n");
   } else {
-    Serial.printf("Record %d bytes\n", sample_size);
+    ESP_LOGD("INFO:","Record %d bytes\n", sample_size);
   }
 
   // Increase volume
@@ -151,14 +151,14 @@ void JPGVoice::recordFile(void *arg) {
   }
 
   // Write data to the WAV file
-  Serial.printf("Writing to the file ...\n");
+  ESP_LOGD("INFO:","Writing to the file ...\n");
   if (fileHandle.write(rec_buffer, size_of_recording) != size_of_recording)
-    Serial.printf("Write file Failed!\n");
+    ESP_LOGD("INFO:","Write file Failed!\n");
 
   free(rec_buffer);
   rec_buffer = NULL;
   fileHandle.close();
-  Serial.printf("The recording is over.\n");
+  ESP_LOGD("INFO:","The recording is over.\n");
 
   // vTaskDelete(NULL);
 }
