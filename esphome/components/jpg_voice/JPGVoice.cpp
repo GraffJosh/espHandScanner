@@ -14,6 +14,7 @@ JPGVoice::JPGVoice()
     ESP_LOGD("INFO:","Failed to initialize I2S!");
   }
 
+  SPI.begin(7,8,9,-1);
   if (!SD.begin(21)) {
     ESP_LOGD("INFO:","Failed to mount SD Card!");
   }
