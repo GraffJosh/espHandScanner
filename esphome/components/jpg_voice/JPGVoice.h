@@ -19,7 +19,7 @@
 #define VOLUME_GAIN 2
 #define RECORD_TIME 10      // seconds, The maximum value is 240
 
-uint32_t record_size = (SAMPLE_RATE * SAMPLE_BITS / 8) * RECORD_TIME;
+uint32_t size_of_recording = (SAMPLE_RATE * SAMPLE_BITS / 8) * RECORD_TIME;
 namespace esphome{
     namespace handScanner{
         class JPGVoice : public Component {

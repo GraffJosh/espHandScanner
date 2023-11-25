@@ -114,13 +114,13 @@ void JPGVoice::recordAndUpload(void *arg) {
   uint8_t wav_header[WAV_HEADER_SIZE];
 
   //Write the WAV file header information to the wav_header array
-  generate_wav_header(wav_header, record_size, SAMPLE_RATE);
+  generate_wav_header(wav_header, size_of_recording, SAMPLE_RATE);
 
   //Call the file.write() function to write the data in the wav_header array to the newly created WAV file
   fileHandle.write(wav_header, WAV_HEADER_SIZE);
 
   // This code uses the ESP32's PSRAM (external cache memory) to dynamically allocate a section of memory to store the recording data.
-  rec_buffer = (uint8_t *)ps_malloc(record_size);
+  rec_buffer = (uint8_t *)ps_malloc(size_of_recording);
   if (rec_buffer == NULL) {
     Serial.printf("malloc failed!\n");
     while (1)
@@ -134,7 +134,7 @@ void JPGVoice::recordAndUpload(void *arg) {
   // the size of the data to be read (i.e. record_size),
   // a pointer to a variable that points to the actual size of the data being read (i.e. &sample_size),
   // and the maximum time to wait for the data to be read (in this case portMAX_DELAY, indicating an infinite wait time).
-  esp_i2s::i2s_read(esp_i2s::I2S_NUM_0, rec_buffer, record_size, &sample_size, portMAX_DELAY);
+  esp_i2s::i2s_read(esp_i2s::I2S_NUM_0, rec_buffer, size_of_recording, &sample_size, portMAX_DELAY);
   if (sample_size == 0) {
     Serial.printf("Record Failed!\n");
   } else {
@@ -148,7 +148,7 @@ void JPGVoice::recordAndUpload(void *arg) {
 
   // Write data to the WAV file
   Serial.printf("Writing to the file ...\n");
-  if (fileHandle.write(rec_buffer, record_size) != record_size)
+  if (fileHandle.write(rec_buffer, size_of_recording) != size_of_recording)
     Serial.printf("Write file Failed!\n");
 
   free(rec_buffer);
