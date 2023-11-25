@@ -6,8 +6,8 @@ from esphome.const import CONF_ID
 
 # DEPENDENCIES = ["i2s"]
 
-handvoice_ns = cg.esphome_ns.namespace("jpg_voice")
-voice_component = handvoice_ns.class_("Voice", cg.Component)  # , uart.UARTDevice)
+handvoice_ns = cg.esphome_ns.namespace("JPGVoice")
+voice_component = handvoice_ns.class_("JPGVoice", cg.Component)  # , uart.UARTDevice)
 
 CONFIG_SCHEMA = (
     cv.Schema({cv.GenerateID(): cv.declare_id(voice_component)}).extend(cv.COMPONENT_SCHEMA)
