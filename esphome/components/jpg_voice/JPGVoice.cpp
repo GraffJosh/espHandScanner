@@ -50,39 +50,6 @@ JPGVoice::JPGVoice()
 // }
 
 
-void JPGVoice::uploadFile(const char* filename) {
-  
-  while (!isWIFIConnected) {
-    delay(1000);
-  }
-  fileHandle = SD.open(filename, FILE_READ);
-  if (!fileHandle) {
-    Serial.println("fileHandle IS NOT AVAILABLE!");
-    return;
-  }
-
-  Serial.println("===> Upload file to Node.js Server");
-
-  HTTPClient client;
-  client.begin("http://sliver.local:8888/uploadAudio");
-  client.addHeader("Content-Type", "audio/wav");
-  int httpResponseCode = client.sendRequest("POST", &fileHandle, fileHandle.size());
-  Serial.print("httpResponseCode : ");
-  Serial.println(httpResponseCode);
-
-  if (httpResponseCode == 200) {
-    String response = client.getString();
-    Serial.println("==================== Transcription ====================");
-    Serial.println(response);
-    Serial.println("====================      End      ====================");
-  } else {
-    Serial.println("Error");
-  }
-  fileHandle.close();
-  client.end();
-}
-
-
 void JPGVoice::generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t sample_rate) {
   // See this for reference: http://soundfile.sapp.org/doc/WaveFormat/
   uint32_t file_size = wav_size + WAV_HEADER_SIZE - 8;
@@ -162,6 +129,41 @@ void JPGVoice::recordFile() {
 
   // vTaskDelete(NULL);
 }
+
+
+
+void JPGVoice::uploadFile() {
+  
+  while (!isWIFIConnected) {
+    delay(1000);
+  }
+  fileHandle = SD.open(filename, FILE_READ);
+  if (!fileHandle) {
+    Serial.println("fileHandle IS NOT AVAILABLE!");
+    return;
+  }
+
+  Serial.println("===> Upload file to Node.js Server");
+
+  HTTPClient client;
+  client.begin("http://sliver.local:8888/uploadAudio");
+  client.addHeader("Content-Type", "audio/wav");
+  int httpResponseCode = client.sendRequest("POST", &fileHandle, fileHandle.size());
+  Serial.print("httpResponseCode : ");
+  Serial.println(httpResponseCode);
+
+  if (httpResponseCode == 200) {
+    String response = client.getString();
+    Serial.println("==================== Transcription ====================");
+    Serial.println(response);
+    Serial.println("====================      End      ====================");
+  } else {
+    Serial.println("Error");
+  }
+  fileHandle.close();
+  client.end();
+}
+
 
 // void JPGVoice::startRecordAndUploadTask(){
 //   xTaskCreate(recordAndUpload, "recordAndUpload", 1024 * 8, NULL, 1, NULL);

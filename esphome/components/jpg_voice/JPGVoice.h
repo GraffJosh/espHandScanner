@@ -25,7 +25,7 @@ namespace esphome{
             public:
             JPGVoice();
             void listDir(const char *dirname, uint8_t levels);
-            void uploadFile(const char *filename);
+            void uploadFile();
             void generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t sample_rate);
             void recordFile();
             // void startRecordAndUploadTask();
