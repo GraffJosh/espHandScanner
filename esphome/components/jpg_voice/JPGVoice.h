@@ -22,7 +22,7 @@ namespace esphome{
             void generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t sample_rate);
             void recordAndUpload(void *arg);
             void startRecordAndUploadTask();
-        }
+        };
     }
 }
 #endif
