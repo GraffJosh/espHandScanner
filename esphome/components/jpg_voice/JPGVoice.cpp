@@ -145,12 +145,12 @@ void JPGVoice::uploadFile() {
   client.begin("http://sliver.local:8888/uploadAudio");
   client.addHeader("Content-Type", "audio/wav");
   int httpResponseCode = client.sendRequest("POST", &fileHandle, fileHandle.size());
-  ESP_LOGD("INFO:",httpResponseCode);
+  ESP_LOGD("INFO:","%s",httpResponseCode);
 
   if (httpResponseCode == 200) {
     String response = client.getString();
     ESP_LOGD("INFO:","==================== Transcription ====================");
-    ESP_LOGD("INFO:",response);
+    ESP_LOGD("INFO:","%s",response);
     ESP_LOGD("INFO:","====================      End      ====================");
   } else {
     ESP_LOGD("INFO:","Error");
