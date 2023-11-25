@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#include "esphome/core/component.h"
+#include "esphome/core/component.h" 
 
 #include <I2S.h>
 // #include "WiFiClientSecure/src/WiFiClientSecure.h"
