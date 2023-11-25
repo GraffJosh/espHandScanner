@@ -1,1 +1,0 @@
-Generated using SquareLine Studio v1.2.3, lvgl version 8.2.0
