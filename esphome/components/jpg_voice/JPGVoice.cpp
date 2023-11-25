@@ -52,17 +52,17 @@ JPGVoice::JPGVoice()
 
 void JPGVoice::uploadFile(const char* filename) {
   fileHandle = SD.open(filename, FILE_READ);
-  if (!file) {
-    Serial.println("FILE IS NOT AVAILABLE!");
+  if (!fileHandle) {
+    Serial.println("fileHandle IS NOT AVAILABLE!");
     return;
   }
 
-  Serial.println("===> Upload FILE to Node.js Server");
+  Serial.println("===> Upload file to Node.js Server");
 
   HTTPClient client;
   client.begin("http://sliver.local:8888/uploadAudio");
   client.addHeader("Content-Type", "audio/wav");
-  int httpResponseCode = client.sendRequest("POST", &file, file.size());
+  int httpResponseCode = client.sendRequest("POST", &fileHandle, fileHandle.size());
   Serial.print("httpResponseCode : ");
   Serial.println(httpResponseCode);
 
@@ -74,7 +74,7 @@ void JPGVoice::uploadFile(const char* filename) {
   } else {
     Serial.println("Error");
   }
-  file.close();
+  fileHandle.close();
   client.end();
 }
 

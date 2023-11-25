@@ -31,7 +31,7 @@ namespace esphome{
             void recordAndUpload(void *arg);
             void startRecordAndUploadTask();
             private:
-            
+            bool isWIFIConnected = false;
             File fileHandle;
             const char defaultFilename[15] = "/recording.wav";
         };
