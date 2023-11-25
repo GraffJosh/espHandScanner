@@ -167,9 +167,9 @@ void JPGVoice::recordAndUpload(void *arg) {
   vTaskDelete(NULL);
 }
 
-void JPGVoice::startRecordAndUploadTask(){
-  xTaskCreate(recordAndUpload, "recordAndUpload", 1024 * 8, NULL, 1, NULL);
-}
+// void JPGVoice::startRecordAndUploadTask(){
+//   xTaskCreate(recordAndUpload, "recordAndUpload", 1024 * 8, NULL, 1, NULL);
+// }
 
 }
 }
