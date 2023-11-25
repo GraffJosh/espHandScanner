@@ -137,7 +137,7 @@ void JPGVoice::uploadFile() {
   while (!isWIFIConnected) {
     delay(1000);
   }
-  fileHandle = SD.open(filename, FILE_READ);
+  fileHandle = SD.open(defaultFilename, FILE_READ);
   if (!fileHandle) {
     Serial.println("fileHandle IS NOT AVAILABLE!");
     return;
