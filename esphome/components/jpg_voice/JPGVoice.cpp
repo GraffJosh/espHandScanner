@@ -3,7 +3,7 @@
 #include "JPGVoice.h"
 
 namespace esphome {
-namespace thermalprinter {
+namespace handScanner {
 JPGVoice::JPGVoice()
 {
   I2S.setAllPins(-1, 42, 41, -1, -1);
