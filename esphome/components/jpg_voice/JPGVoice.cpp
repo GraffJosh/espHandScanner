@@ -26,36 +26,36 @@ JPGVoice::JPGVoice()
   }
 }
 
-void JPGVoice::listDir(const char *dirname, uint8_t levels) {
-  Serial.printf("Listing directory: %s\n", dirname);
-  fs::FS* fs = SD;
-  File root = fs.open(dirname);
-  if (!root) {
-    Serial.println("Failed to open directory");
-    return;
-  }
-  if (!root.isDirectory()) {
-    Serial.println("Not a directory");
-    return;
-  }
+// void JPGVoice::listDir(const char *dirname, uint8_t levels) {
+//   Serial.printf("Listing directory: %s\n", dirname);
+//   fs::FS* fs = SD;
+//   File root = fs.open(dirname);
+//   if (!root) {
+//     Serial.println("Failed to open directory");
+//     return;
+//   }
+//   if (!root.isDirectory()) {
+//     Serial.println("Not a directory");
+//     return;
+//   }
 
-  File file = root.openNextFile();
-  while (file) {
-    if (file.isDirectory()) {
-      Serial.print("  DIR : ");
-      Serial.println(file.name());
-      if (levels) {
-        listDir(fs, file.path(), levels - 1);
-      }
-    } else {
-      Serial.print("  FILE: ");
-      Serial.print(file.name());
-      Serial.print("  SIZE: ");
-      Serial.println(file.size());
-    }
-    file = root.openNextFile();
-  }
-}
+//   File file = root.openNextFile();
+//   while (file) {
+//     if (file.isDirectory()) {
+//       Serial.print("  DIR : ");
+//       Serial.println(file.name());
+//       if (levels) {
+//         listDir(file.path(), levels - 1);
+//       }
+//     } else {
+//       Serial.print("  FILE: ");
+//       Serial.print(file.name());
+//       Serial.print("  SIZE: ");
+//       Serial.println(file.size());
+//     }
+//     file = root.openNextFile();
+//   }
+// }
 
 
 void JPGVoice::uploadFile() {
@@ -164,7 +164,6 @@ void JPGVoice::recordAndUpload(void *arg) {
   file.close();
   Serial.printf("The recording is over.\n");
 
-  listDir("/", 0);
   while (!isWIFIConnected) {
     delay(1000);
   }
