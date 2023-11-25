@@ -1,10 +1,10 @@
 
 #include "Arduino.h"
-#include "voice.h"
+#include "JPGVoice.h"
 
 namespace esphome {
 namespace thermalprinter {
-Voice::Voice()
+JPGVoice::JPGVoice()
 {
   I2S.setAllPins(-1, 42, 41, -1, -1);
 
@@ -18,9 +18,9 @@ Voice::Voice()
   }
 }
 
-void Voice::listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
+void JPGVoice::listDir(const char *dirname, uint8_t levels) {
   Serial.printf("Listing directory: %s\n", dirname);
-
+  fs::FS* fs = SD;
   File root = fs.open(dirname);
   if (!root) {
     Serial.println("Failed to open directory");
@@ -50,7 +50,7 @@ void Voice::listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
 }
 
 
-void Voice::uploadFile() {
+void JPGVoice::uploadFile() {
   file = SD.open(filename, FILE_READ);
   if (!file) {
     Serial.println("FILE IS NOT AVAILABLE!");
@@ -79,7 +79,7 @@ void Voice::uploadFile() {
 }
 
 
-void Voice::generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t sample_rate) {
+void JPGVoice::generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t sample_rate) {
   // See this for reference: http://soundfile.sapp.org/doc/WaveFormat/
   uint32_t file_size = wav_size + WAV_HEADER_SIZE - 8;
   uint32_t byte_rate = SAMPLE_RATE * SAMPLE_BITS / 8;
@@ -101,7 +101,7 @@ void Voice::generate_wav_header(uint8_t *wav_header, uint32_t wav_size, uint32_t
   memcpy(wav_header, set_wav_header, sizeof(set_wav_header));
 }
 
-void Voice::recordAndUpload(void *arg) {
+void JPGVoice::recordAndUpload(void *arg) {
   uint32_t sample_size = 0;
 
   //This variable will be used to point to the actual recording buffer
@@ -156,7 +156,7 @@ void Voice::recordAndUpload(void *arg) {
   file.close();
   Serial.printf("The recording is over.\n");
 
-  listDir(SD, "/", 0);
+  listDir("/", 0);
   while (!isWIFIConnected) {
     delay(1000);
   }
@@ -168,7 +168,7 @@ void Voice::recordAndUpload(void *arg) {
   vTaskDelete(NULL);
 }
 
-void Voice::startRecordAndUploadTask(){
+void JPGVoice::startRecordAndUploadTask(){
   xTaskCreate(recordAndUpload, "recordAndUpload", 1024 * 8, NULL, 1, NULL);
 }
 
